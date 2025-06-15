@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Authentication | {{ env('APP_NAME') ?? 'Laravel' }}</title>
+    <title>Login | {{ env('APP_NAME') ?? 'Laravel' }}</title>
 
     <meta name="description" content="" />
 
@@ -61,7 +61,6 @@
     </div>
 
     <!-- / Content -->
-
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->

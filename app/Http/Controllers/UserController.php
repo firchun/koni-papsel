@@ -40,17 +40,30 @@ class UserController extends Controller
             ->rawColumns(['action', 'role', 'avatar'])
             ->make(true);
     }
+    public function getByKabupaten($id)
+    {
+        $users = User::where('id_kabupaten', $id);
+
+        return DataTables::of($users)
+            ->addColumn('action', function ($user) {
+                return '<button class="btn btn-sm btn-primary" onclick="resetPassword(' . $user->id . ')">Reset Password</button><button class="btn btn-sm btn-danger mx-2" onclick="deleteOperator(' . $user->id . ')"><i class="bx bx-trash"></i></button>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
     public function store(Request $request)
     {
         if ($request->filled('id')) {
             $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255'],
+                'id_kabupaten' => ['required', 'integer', 'max:255', 'exists:kabupaten,id'],
             ]);
         } else {
             $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'id_kabupaten' => ['required', 'integer', 'max:255', 'exists:kabupaten,id'],
             ]);
         }
 
@@ -59,6 +72,7 @@ class UserController extends Controller
             $usersData = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
+                'id_kabupaten' => $request->input('id_kabupaten'),
                 'role' => $request->input('role'),
             ];
             $user = User::find($request->input('id'));
@@ -72,8 +86,9 @@ class UserController extends Controller
             $usersData = [
                 'name' => $request->input('name'),
                 'email' => $request->input('email'),
-                'role' => $request->input('role'),
-                'password' => Hash::make('password'),
+                'id_kabupaten' => $request->input('id_kabupaten'),
+                'role' => $request->input('role') ?? 'Operator',
+                'password' => $request->input('password') ?? Hash::make('operatorkoni'),
             ];
 
             User::create($usersData);

@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\AtletController;
+use App\Http\Controllers\CaborController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\KabupatenController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -21,19 +25,37 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes(['register' => false, 'password.request' => false, 'password.reset' => false, 'password.email' => false]);
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     //akun managemen
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    //customers managemen
-    Route::get('/customers', [CustomerController::class, 'index'])->name('customers');
-    Route::post('/customers/store',  [CustomerController::class, 'store'])->name('customers.store');
-    Route::get('/customers/edit/{id}',  [CustomerController::class, 'edit'])->name('customers.edit');
-    Route::delete('/customers/delete/{id}',  [CustomerController::class, 'destroy'])->name('customers.delete');
-    Route::get('/customers-datatable', [CustomerController::class, 'getCustomersDataTable']);
+    //atlet managemen
+    Route::get('/atlet', [AtletController::class, 'index'])->name('atlet');
+    Route::post('/atlet/store',  [AtletController::class, 'store'])->name('atlet.store');
+    Route::get('/atlet/edit/{id}',  [AtletController::class, 'edit'])->name('atlet.edit');
+    Route::get('/atlet/detail/{id}',  [AtletController::class, 'detail'])->name('atlet.detail');
+    Route::delete('/atlet/delete/{id}',  [AtletController::class, 'destroy'])->name('atlet.delete');
+    Route::get('/atlet-datatable', [AtletController::class, 'getAtletDataTable']);
+    //kabupaten managemen
+    Route::get('/kabupaten', [KabupatenController::class, 'index'])->name('kabupaten');
+    Route::post('/kabupaten/store',  [KabupatenController::class, 'store'])->name('kabupaten.store');
+    Route::get('/kabupaten/edit/{id}',  [KabupatenController::class, 'edit'])->name('kabupaten.edit');
+    Route::delete('/kabupaten/delete/{id}',  [KabupatenController::class, 'destroy'])->name('kabupaten.delete');
+    Route::get('/kabupaten-datatable', [KabupatenController::class, 'getKabupatenDataTable']);
+    //cabor managemen
+    Route::get('/cabor', [CaborController::class, 'index'])->name('cabor');
+    Route::post('/cabor/store',  [CaborController::class, 'store'])->name('cabor.store');
+    Route::get('/cabor/edit/{id}',  [CaborController::class, 'edit'])->name('cabor.edit');
+    Route::delete('/cabor/delete/{id}',  [CaborController::class, 'destroy'])->name('cabor.delete');
+    Route::get('/cabor-datatable', [CaborController::class, 'getCaborDataTable']);
+    Route::post('/nomor-pertandingan/store', [CaborController::class, 'storeNomor'])->name('nomor.store');
+    Route::get('/nomor-pertandingan/edit/{id}', [CaborController::class, 'editNomor'])->name('nomor.edit');
+    // report
+    Route::get('/laporan-pelatih', [ReportController::class, 'pelatih'])->name('laporan-pelatih');
+    Route::get('/laporan-atlet', [ReportController::class, 'atlet'])->name('laporan-atlet');
 });
 Route::middleware(['auth:web', 'role:Admin'])->group(function () {
     //user managemen
@@ -42,4 +64,5 @@ Route::middleware(['auth:web', 'role:Admin'])->group(function () {
     Route::get('/users/edit/{id}',  [UserController::class, 'edit'])->name('users.edit');
     Route::delete('/users/delete/{id}',  [UserController::class, 'destroy'])->name('users.delete');
     Route::get('/users-datatable', [UserController::class, 'getUsersDataTable']);
+    Route::get('/operator-by-kabupaten/{id}', [UserController::class, 'getByKabupaten']);
 });
