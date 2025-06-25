@@ -80,6 +80,18 @@
                             name: 'email'
                         },
                         {
+                            data: 'sk',
+                            name: 'sk'
+                        },
+                        {
+                            data: 'ktp',
+                            name: 'ktp'
+                        },
+                        {
+                            data: 'foto',
+                            name: 'foto'
+                        },
+                        {
                             data: 'action',
                             name: 'action',
                             orderable: false,
@@ -142,6 +154,43 @@
                     }
                 });
             });
+            window.resetPassword = function(id) {
+                if (confirm('Apakah anda yakin reset password akun ini?')) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/users/reset-password/' + id,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // alert(response.message);
+                            $('#datatable-operator').DataTable().ajax.reload();
+                            alert('password berhasil di reset, password baru adalah: operatorkoni');
+                        },
+                        error: function(xhr) {
+                            alert('Terjadi kesalahan: ' + xhr.responseText);
+                        }
+                    });
+                }
+            };
+            window.verification = function(id) {
+                if (confirm('Apakah anda yakin bahwa operator telah valid?')) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/users/verification/' + id,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            // alert(response.message);
+                            $('#datatable-operator').DataTable().ajax.reload();
+                        },
+                        error: function(xhr) {
+                            alert('Terjadi kesalahan: ' + xhr.responseText);
+                        }
+                    });
+                }
+            };
             window.deleteCustomers = function(id) {
                 if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                     $.ajax({

@@ -12,6 +12,11 @@
             height: 100%;
             margin: 0;
         }
+
+        #resultContainer,
+        #resetContainer {
+            transition: all 0.3s ease-in-out;
+        }
     </style>
 </head>
 
@@ -59,16 +64,108 @@
         class="hidden absolute inset-0 bg-white/20 backdrop-blur-md flex flex-col justify-center items-center transition-all duration-500 z-50">
         <img src="{{ asset('img/koni_papsel.png') }}" alt="KONI Papua Selatan Logo"
             class="mx-auto mb-6 w-auto h-[150px] transition-all duration-300">
-        <input type="text" placeholder="NIK KK/ NIK KTP"
+        <input type="text" id="nikInput" placeholder="NIK KK/ NIK KTP"
             class="w-3/4 md:w-1/2 p-3 rounded border border-gray-300 transition-all duration-300">
 
         <div class="mt-4 flex space-x-4">
-            <button class="px-6 py-2 bg-black text-white rounded">Cari</button>
+            <button id="searchBtn" class="px-6 py-2 bg-black text-white rounded">Cari</button>
+            <div id="resetContainer" class=" hidden">
+                <button id="resetBtn" class="px-6 py-2 bg-gray-800 text-white rounded">
+                    Reset
+                </button>
+            </div>
             <button id="cancelSearch" class="px-6 py-2 bg-red-500 text-white rounded">Batal</button>
         </div>
+        <div id="resultContainer" class="mt-6 w-3/4 md:w-1/2 hidden">
+            <table class="table-auto w-full  text-left text-sm bg-white/50 backdrop-blur rounded-lg">
+                <tbody id="resultBody">
+                    <!-- Hasil akan dimasukkan di sini -->
+                </tbody>
+            </table>
+        </div>
     </div>
-
     <script>
+        function formatTanggal(tanggal) {
+            const dateObj = new Date(tanggal);
+            const dd = String(dateObj.getDate()).padStart(2, '0');
+            const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const yyyy = dateObj.getFullYear();
+
+            return `${dd}-${mm}-${yyyy}`;
+        }
+        document.getElementById('searchBtn').addEventListener('click', function() {
+            const nik = document.getElementById('nikInput').value;
+            const resultContainer = document.getElementById('resultContainer');
+            const resultBody = document.getElementById('resultBody');
+
+            if (!nik) {
+                alert('Masukkan NIK terlebih dahulu.');
+                return;
+            }
+
+            fetch(`/search-nik?nik=${nik}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultContainer.classList.remove('hidden');
+                    resultBody.innerHTML = ''; // Kosongkan dulu
+
+                    if (data && data.nama_lengkap) {
+                        resultBody.innerHTML = `
+                           <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 font-bold text-red-800">Nama Lengkap</td>
+                                <td class="py-3 px-4 text-gray-800">${data.nama_lengkap}</td>
+                            </tr>
+                           <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 font-bold text-red-800">Tempat,Tanggal Lahir</td>
+                                <td class="py-3 px-4 text-gray-800">${data.tempat_lahir}, ${formatTanggal(data.tanggal_lahir)}</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 font-bold text-red-800">Kabupaten</td>
+                                <td class="py-3 px-4 text-gray-800">${data.kabupaten?.kabupaten || '-'}</td>
+                            </tr>
+                            <tr class="border-b border-gray-200">
+                                <td class="py-3 px-4 font-bold text-red-800">Cabang Olahraga</td>
+                                <td class="py-3 px-4 text-gray-800">
+                                    ${data.cabor?.cabor || '-'}<br>
+                                    <span class="text-sm text-gray-500">${data.nomor_pertandingan?.nomor_pertandingan || ''} - ${data.sub_nomor_pertandingan || ''}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold text-red-800">Status Pengajuan</td>
+                                <td class="py-3 px-4 text-gray-800">
+                                    <span class="inline-block px-3 py-1 text-sm font-semibold rounded-full
+                                        ${data.status === 'Revisi' ? 'bg-yellow-100 text-yellow-800' :
+                                        data.status === 'Diterima' ? 'bg-green-100 text-green-800' :
+                                        'bg-red-100 text-red-800'}">
+                                        ${data.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        `;
+                        document.getElementById("resultContainer").classList.remove("hidden");
+                        document.getElementById("resetContainer").classList.remove("hidden");
+                    } else {
+                        resultBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="px-4 py-2 text-center text-red-600">Data tidak ditemukan.</td>
+                        </tr>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan saat mengambil data.');
+                });
+        });
+    </script>
+    <script>
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            document.getElementById('resultContainer').classList.add('hidden');
+            document.getElementById('resetContainer').classList.add('hidden');
+            resultBody.innerHTML = '';
+
+            // Reset input pencarian
+            document.querySelector('#searchForm input[type="text"]').value = '';
+        });
         const blurSection = document.getElementById('blurSection');
         const searchForm = document.getElementById('searchForm');
         const expandButton = document.getElementById('expandButton');

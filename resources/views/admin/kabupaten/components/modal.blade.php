@@ -50,7 +50,7 @@
 </div>
 <div class="modal fade" id="akunOperatorModal" tabindex="-1" role="dialog" aria-labelledby="akunOperatorLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="akunOperatorLabel">Daftar Operator Kabupaten</h5>
@@ -60,16 +60,21 @@
                 <button class="btn btn-primary mb-3" id="createOperatorBtn">
                     Tambah Operator
                 </button>
-                <table id="datatable-operator" class="table table-sm table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nama</th>
-                            <th>Email</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="table-responsive">
+                    <table id="datatable-operator" class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>SK</th>
+                                <th>KTP</th>
+                                <th>Foto</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

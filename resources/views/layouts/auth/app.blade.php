@@ -47,7 +47,8 @@
     <script src="{{ asset('backend_theme/') }}/assets/js/config.js"></script>
 </head>
 
-<body>
+<body
+    style="background-image: url('{{ asset('img/bg-login.jpeg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <!-- Content -->
 
     <div class="container-xxl">

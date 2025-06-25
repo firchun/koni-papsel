@@ -15,7 +15,7 @@
                                 data-bs-toggle="modal" data-bs-target="#create">
                                 <span>
                                     <i class="bx bx-plus me-sm-1"> </i>
-                                    <span class="d-none d-sm-inline-block">Tambah Data</span>
+                                    <span class="d-none d-sm-inline-block">Tambah Administrator</span>
                                 </span>
                             </button>
                         </div>

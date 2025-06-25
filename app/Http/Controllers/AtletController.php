@@ -6,6 +6,7 @@ use App\Models\Atlet;
 use App\Models\Cabor;
 use App\Models\Kabupaten;
 use App\Models\Notifikasi;
+use App\Models\Tinjauan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,12 @@ class AtletController extends Controller
         ];
         return view('admin.atlet.detail', $data);
     }
+    public function SearchNik(Request $request)
+    {
+        $nik = $request->nik;
+        $atlet = Atlet::with(['kabupaten', 'cabor', 'nomor_pertandingan'])->where('nik_ktp', $nik)->orWhere('nik_kk', $nik)->first();
+        return response()->json($atlet);
+    }
     public function getAtletDataTable()
     {
         $Atlets = Atlet::with(['cabor', 'nomor_pertandingan', 'kabupaten'])->orderByDesc('id');
@@ -42,7 +49,41 @@ class AtletController extends Controller
             ->rawColumns(['action'])
             ->make(true);
     }
+    public function storeTinjauan(Request $request)
+    {
+        // Validasi data
+        $validated = $request->validate([
+            'id_atlet' => 'nullable|exists:atlet,id',
+            'isi' => 'required|string',
+            'status' => 'required|in:Diterima,Ditolak,Revisi,Distujui',
+        ]);
 
+        // Simpan data ke databa
+        $validated['status'] = $request->input('status') == 'Distujui' ? 'Diterima' : $request->input('status');
+        $hasil = Tinjauan::create($validated);
+
+        // Jika ada id_atlet, update status di tabel atlet
+        if ($request->filled('id_atlet')) {
+            $atlet = Atlet::with(['kabupaten', 'cabor'])->find($request->id_atlet);
+
+            if ($atlet) {
+                // Update status atlet
+                $atlet->status = $request->status;
+                $atlet->save();
+                // Ambil user admin penerima notifikasi (misal role admin = 'admin')
+                $Operator = User::where('role', 'Operator')->where('id_kabupaten', $atlet->id_kabupaten)->get();
+
+                foreach ($Operator as $item) {
+                    Notifikasi::create([
+                        'id_user' => $item->id,
+                        'isi' => 'Pengajuan anda telah di cek dengan hasil :  ' . $hasil->status . ' oleh ' . Auth::user()->name . '.',
+                    ]);
+                }
+            }
+        }
+        // Redirect atau response
+        return redirect()->back()->with('success', 'Hasil peninjauan berhasil disimpan.');
+    }
     public function store(Request $request)
     {
         $request->validate([
@@ -67,6 +108,7 @@ class AtletController extends Controller
             'fc_kk' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
             'akta' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
             'pas_foto' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
+            'bpjs' => 'nullable|file|mimes:jpg,jpeg,png|max:3072',
         ]);
 
         $data = $request->only([
@@ -87,7 +129,7 @@ class AtletController extends Controller
         ]);
 
         // Upload file jika ada
-        foreach (['fc_ijazah', 'fc_ktp', 'fc_kk', 'akta', 'pas_foto'] as $field) {
+        foreach (['fc_ijazah', 'fc_ktp', 'fc_kk', 'akta', 'pas_foto', 'bpjs'] as $field) {
             if ($request->hasFile($field)) {
                 $file = $request->file($field);
                 $filename = $field . '_' . time() . '.' . $file->getClientOriginalExtension();

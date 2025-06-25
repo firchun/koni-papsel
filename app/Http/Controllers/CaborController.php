@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Atlet;
 use App\Models\Cabor;
 use App\Models\NomorPertandinganCabor;
+use App\Models\Pelatih;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -37,8 +38,9 @@ class CaborController extends Controller
                     ->count();
                 return '<span class="badge bg-label-warning mx-1">' . $menunggu . '</span><span class="badge bg-label-success mx-1">' . $disetujui . '</span><span class="badge bg-label-danger">' . $ditolak . '</span>';
             })
-            ->addColumn('pelatih', function ($Cabor) {
-                return '0';
+            ->addColumn('pelatih', function ($cabor) {
+                $disetujui = 0;
+                return '<span class="badge bg-label-primary mx-1">' . $disetujui . '</span>';
             })
             ->rawColumns(['action', 'pelatih', 'atlet'])
             ->make(true);

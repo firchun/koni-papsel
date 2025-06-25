@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">User Form</h5>
+                <h5 class="modal-title" id="userModalLabel">Update Akun Administrator</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -18,15 +18,7 @@
                         <label for="formUserEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="formUserEmail" name="email" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="formUserRole" class="form-label">Role</label>
-                        <select class="form-control" id="formUserRole" name="role">
-                            <option value="User">User</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Operator">Operator</option>
-                        </select>
-                    </div>
-
+                    <input type="hidden" value="Admin" name="role">
                 </form>
             </div>
             <div class="modal-footer">
@@ -40,7 +32,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">User Form</h5>
+                <h5 class="modal-title" id="userModalLabel">Tambah Akun Administrator</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -55,13 +47,10 @@
                         <input type="email" class="form-control" id="formUserEmail" name="email" required>
                     </div>
                     <div class="mb-3">
-                        <label for="formUserRole" class="form-label">Role</label>
-                        <select class="form-control" id="formUserRole" name="role">
-                            <option value="User">User</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Operator">Operator</option>
-                        </select>
+                        <label for="formUserEmail" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required>
                     </div>
+                    <input type="hidden" value="Admin" name="role">
                 </form>
             </div>
             <div class="modal-footer">

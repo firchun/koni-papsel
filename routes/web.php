@@ -4,6 +4,7 @@ use App\Http\Controllers\AtletController;
 use App\Http\Controllers\CaborController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KabupatenController;
+use App\Http\Controllers\PelatihController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
@@ -24,17 +25,28 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/search-nik', [AtletController::class, 'SearchNik'])->name('search-nik');
 
 Auth::routes(['register' => false, 'password.request' => false, 'password.reset' => false, 'password.email' => false]);
 Route::middleware(['auth:web'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+    // chart admin
+    Route::get('/chart-atlet', [App\Http\Controllers\HomeController::class, 'chartAtlet'])->name('chart-atlet');
+    // update user
+    Route::post('/users/store',  [UserController::class, 'store'])->name('users.store');
     //akun managemen
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //pelatih managemen
+    Route::get('/pelatih', [PelatihController::class, 'index'])->name('pelatih');
+    Route::post('/pelatih/store',  [PelatihController::class, 'store'])->name('pelatih.store');
+    Route::delete('/pelatih/delete/{id}',  [PelatihController::class, 'destroy'])->name('pelatih.delete');
+    Route::get('/pelatih-datatable', [PelatihController::class, 'getPelatihDataTable']);
     //atlet managemen
+
     Route::get('/atlet', [AtletController::class, 'index'])->name('atlet');
     Route::post('/atlet/store',  [AtletController::class, 'store'])->name('atlet.store');
+    Route::post('/atlet/store-tinjauan',  [AtletController::class, 'storeTinjauan'])->name('atlet.store-tinjauan');
     Route::get('/atlet/edit/{id}',  [AtletController::class, 'edit'])->name('atlet.edit');
     Route::get('/atlet/detail/{id}',  [AtletController::class, 'detail'])->name('atlet.detail');
     Route::delete('/atlet/delete/{id}',  [AtletController::class, 'destroy'])->name('atlet.delete');
@@ -60,8 +72,10 @@ Route::middleware(['auth:web'])->group(function () {
 Route::middleware(['auth:web', 'role:Admin'])->group(function () {
     //user managemen
     Route::get('/users', [UserController::class, 'index'])->name('users');
-    Route::post('/users/store',  [UserController::class, 'store'])->name('users.store');
+    // Route::post('/users/store',  [UserController::class, 'store'])->name('users.store');
     Route::get('/users/edit/{id}',  [UserController::class, 'edit'])->name('users.edit');
+    Route::get('/users/verification/{id}',  [UserController::class, 'verification'])->name('users.verification');
+    Route::get('/users/reset-password/{id}',  [UserController::class, 'resetPassword'])->name('users.reset-password');
     Route::delete('/users/delete/{id}',  [UserController::class, 'destroy'])->name('users.delete');
     Route::get('/users-datatable', [UserController::class, 'getUsersDataTable']);
     Route::get('/operator-by-kabupaten/{id}', [UserController::class, 'getByKabupaten']);

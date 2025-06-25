@@ -22,6 +22,9 @@ class User extends Authenticatable
         'email',
         'password',
         'id_kabupaten',
+        'sk_operator',
+        'ktp_operator',
+        'foto_operator',
     ];
 
     /**

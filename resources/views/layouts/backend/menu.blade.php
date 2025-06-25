@@ -36,6 +36,12 @@
             <li class="menu-header small text-uppercase">
                 <span class="menu-header-text">Master Data</span>
             </li>
+            <li class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
+                <a href="{{ url('/users') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-user"></i>
+                    <div data-i18n="Analytics">Administrator</div>
+                </a>
+            </li>
             <li class="menu-item {{ request()->is('kabupaten') ? 'active' : '' }}">
                 <a href="{{ url('/kabupaten') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-folder"></i>
@@ -49,30 +55,38 @@
                 </a>
             </li>
         @endif
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Pengajuan</span>
-        </li>
-        <li class="menu-item {{ request()->is('atlet*') ? 'active' : '' }}">
-            <a href="{{ url('/atlet') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Analytics">Pengajuan Atlet</div>
-            </a>
-        </li>
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Laporan</span>
-        </li>
-        <li class="menu-item {{ request()->is('laporan-atlet') ? 'active' : '' }}">
-            <a href="{{ url('/laporan-atlet') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Analytics">Atlet</div>
-            </a>
-        </li>
-        <li class="menu-item {{ request()->is('laporan-pelatih') ? 'active' : '' }}">
-            <a href="{{ url('/laporan-pelatih') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-file"></i>
-                <div data-i18n="Analytics">Pelatih</div>
-            </a>
-        </li>
+        @if (Auth::user()->role == 'Admin' || (Auth::user()->role == 'Operator' && Auth::user()->operator_verified == true))
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Pengajuan</span>
+            </li>
+            <li class="menu-item {{ request()->is('pelatih*') ? 'active' : '' }}">
+                <a href="{{ url('/pelatih') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Analytics">Pengajuan Pelatih</div>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->is('atlet*') ? 'active' : '' }}">
+                <a href="{{ url('/atlet') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Analytics">Pengajuan Atlet</div>
+                </a>
+            </li>
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Laporan</span>
+            </li>
+            <li class="menu-item {{ request()->is('laporan-atlet') ? 'active' : '' }}">
+                <a href="{{ url('/laporan-atlet') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Analytics">Atlet</div>
+                </a>
+            </li>
+            <li class="menu-item {{ request()->is('laporan-pelatih') ? 'active' : '' }}">
+                <a href="{{ url('/laporan-pelatih') }}" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-file"></i>
+                    <div data-i18n="Analytics">Pelatih</div>
+                </a>
+            </li>
+        @endif
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Akun</span>
         </li>

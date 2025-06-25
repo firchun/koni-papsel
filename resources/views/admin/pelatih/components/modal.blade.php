@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="userModalLabel">Pengajuan Atlet Baru</h5>
+                <h5 class="modal-title" id="userModalLabel">Pengajuan Pelatih Baru</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -25,7 +25,6 @@
                                 required></select>
                         </div>
                     </div>
-
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Sub Kategori Pertandingan</label>
@@ -106,21 +105,16 @@
                             <label class="form-label">FC KK</label>
                             <input type="file" class="form-control" name="fc_kk">
                         </div>
-
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Akta</label>
                             <input type="file" class="form-control" name="akta">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Pas Foto</label>
                             <input type="file" class="form-control" name="pas_foto">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">BPJS Aktif</label>
-                            <input type="file" class="form-control" name="bpjs">
                         </div>
                     </div>
                 </form>

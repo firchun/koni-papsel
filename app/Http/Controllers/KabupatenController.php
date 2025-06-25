@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Atlet;
 use App\Models\Kabupaten;
+use App\Models\Pelatih;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -43,7 +44,16 @@ class KabupatenController extends Controller
                 return '<span class="badge bg-label-warning mx-1">' . $menunggu . '</span><span class="badge bg-label-success mx-1">' . $disetujui . '</span><span class="badge bg-label-danger">' . $ditolak . '</span>';
             })
             ->addColumn('pelatih', function ($Kabupaten) {
-                return '0';
+                $ditolak = Pelatih::where('id_kabupaten', $Kabupaten->id)
+                    ->where('status', 'Ditolak')
+                    ->count();
+                $menunggu = Pelatih::where('id_kabupaten', $Kabupaten->id)
+                    ->where('status', ['Menunggu', 'Revisi'])
+                    ->count();
+                $disetujui = Pelatih::where('id_kabupaten', $Kabupaten->id)
+                    ->where('status', 'Distujui')
+                    ->count();
+                return '<span class="badge bg-label-warning mx-1">' . $menunggu . '</span><span class="badge bg-label-success mx-1">' . $disetujui . '</span><span class="badge bg-label-danger">' . $ditolak . '</span>';
             })
             ->rawColumns(['action', 'pelatih', 'atlet', 'operator'])
             ->make(true);

@@ -8,8 +8,8 @@
                 <!-- Logo -->
                 <div class="app-brand justify-content-center">
                     <a href="{{ url('/') }}" class="app-brand-link gap-2">
-
-                        <span class="app-brand-text demo text-body fw-bolder">{{ env('APP_NAME') ?? 'LARAVEL' }}</span>
+                        <span class="app-brand-text   fw-bolder text-danger" style="font-size: 25px;">KONI PAPUA
+                            SELATAN</span>
                     </a>
                 </div>
                 <!-- /Logo -->
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit">Masuk</button>
+                        <button class="btn btn-danger d-grid w-100" type="submit">Masuk</button>
                     </div>
                 </form>
 

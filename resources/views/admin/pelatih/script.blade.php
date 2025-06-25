@@ -5,7 +5,7 @@
                 processing: true,
                 serverSide: true,
                 responsive: true,
-                ajax: '{{ url('atlet-datatable') }}',
+                ajax: '{{ url('pelatih-datatable') }}',
                 columns: [{
                         data: 'id',
                         name: 'id'
@@ -16,20 +16,9 @@
                             name: 'kabupaten.kabupaten',
                         },
                     @endif {
-                        data: 'cabor.cabor',
-                        name: 'cabor.cabor',
-                        render: function(data, type, row) {
-                            const cabor = row.cabor?.cabor ?? '-';
-                            const nomor = row.nomor_pertandingan?.nomor_pertandingan ?? '-';
-                            const sub_nomor = row.sub_nomor_pertandingan ?? '-';
-                            return `<strong>${cabor}</strong><br><small class="badge bg-label-primary">${nomor} (${sub_nomor})</small>`;
-                        }
-                    },
-                    {
                         data: 'nama_lengkap',
                         name: 'nama_lengkap'
                     },
-
                     {
                         data: 'status',
                         name: 'status',
@@ -38,7 +27,7 @@
 
                             if (data === 'Menunggu') {
                                 badgeClass = 'bg-label-secondary';
-                            } else if (data === 'Disetujui') {
+                            } else if (data === 'Verified') {
                                 badgeClass = 'bg-label-primary';
                             } else if (data === 'Ditolak') {
                                 badgeClass = 'bg-label-danger';
