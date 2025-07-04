@@ -21,7 +21,8 @@ class PelatihController extends Controller
     {
         // Validasi data
         $validatedData = $request->validate([
-            'id' => 'nullable|exists:pelatih,id',
+            'id_kabupaten' => 'required|exists:kabupaten,id',
+            'id' => 'nullable',
             'nama_lengkap' => 'required|string',
             'nik_kk' => 'required|string',
             'nik_ktp' => 'required|string',
@@ -52,6 +53,7 @@ class PelatihController extends Controller
         }
 
         // Assign data
+        $pelatih->id_kabupaten = $validatedData['id_kabupaten'];
         $pelatih->nama_lengkap = $validatedData['nama_lengkap'];
         $pelatih->nik_kk = $validatedData['nik_kk'];
         $pelatih->nik_ktp = $validatedData['nik_ktp'];
@@ -82,7 +84,7 @@ class PelatihController extends Controller
     }
     public function getPelatihDataTable()
     {
-        $Atlets = Pelatih::with(['cabor', 'nomor_pertandingan', 'kabupaten'])->orderByDesc('id');
+        $Atlets = Pelatih::with(['kabupaten'])->orderByDesc('id');
         if (Auth::user()->role == 'Operator') {
             $Atlets->where('id_kabupaten', Auth::user()->id_kabupaten);
         }

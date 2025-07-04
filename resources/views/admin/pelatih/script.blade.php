@@ -92,7 +92,7 @@
                 var formData = $('#createUserForm').serialize();
                 $.ajax({
                     type: 'POST',
-                    url: '/atlet/store',
+                    url: '/pelatih/store',
                     data: formData,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

@@ -6,7 +6,6 @@
         <div class="col-12">
             <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center">
-
                     <a href="{{ route('atlet') }}" class="btn btn-secondary">
                         <i class="bx bx-arrow-back"></i> Kembali
                     </a>
